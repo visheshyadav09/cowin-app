@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cowin_app',
+    'cowin_api',
     'rest_framework'
 ]
 

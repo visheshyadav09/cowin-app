@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cowin_app.urls')),
+    path('api/', include('cowin_api.urls')),
+    
 ]
