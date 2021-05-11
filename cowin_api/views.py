@@ -8,12 +8,14 @@ import requests
 import json
 import hashlib
 from datetime import datetime, timedelta
+from rest_framework.permissions import IsAuthenticated   
 # Create your views here.
 
 OTP_URL             = cowin_secret.OTP_URL
 CONFIRM_OTP         = cowin_secret.CONFIRM_OTP
 GET_STATES          = cowin_secret.GET_STATES
 GET_DISTRICTS       = cowin_secret.GET_DISTRICTS
+GET_BENEFICIARY     = cowin_secret.GET_BENEFICIARY
 SECRET              = cowin_secret.SECRET
 headers             = cowin_secret.headers
 
@@ -77,6 +79,32 @@ class GetToken(APIView):
                 return HttpResponse(json.dumps({'status': 'success', 'token': self.token}))
 
         return HttpResponse(json.dumps({'status': 'success', 'token': token}))
+
+class GetBeneficiaries(APIView):
+    def post(self, request):
+
+        try:
+            # request.POST = request.body
+            # print("i am in detail")
+            # token = request.POST['token']
+            received_json_data = json.loads(request.body.decode("utf-8"))
+            token=received_json_data['token']
+            print(token)
+            headers["Authorization"] = f"Bearer {token}"
+        except:
+            return HttpResponse(json.dumps({'status':'failure','message':'Token Not Found'}))
+        
+        
+        
+
+        r = requests.get(GET_BENEFICIARY, headers=headers).content
+
+        if r == b'Unauthenticated access!':
+            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}))
+ 
+        print(r)
+        return HttpResponse(r)
+
 
 
                 
