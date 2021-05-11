@@ -80,30 +80,27 @@ class GetToken(APIView):
 
         return HttpResponse(json.dumps({'status': 'success', 'token': token}))
 
+
+
 class GetBeneficiaries(APIView):
+
     def post(self, request):
 
         try:
-            # request.POST = request.body
-            # print("i am in detail")
-            # token = request.POST['token']
             received_json_data = json.loads(request.body.decode("utf-8"))
             token=received_json_data['token']
-            print(token)
             headers["Authorization"] = f"Bearer {token}"
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Token Not Found'}))
-        
-        
-        
 
-        r = requests.get(GET_BENEFICIARY, headers=headers).content
+        response = requests.get(GET_BENEFICIARY, headers=headers).content
 
-        if r == b'Unauthenticated access!':
+        if response == b'Unauthenticated access!':
             return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}))
- 
-        print(r)
-        return HttpResponse(r)
+
+        response = json.loads(response['beneficiaries'][0])
+    
+        return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}))
 
 
 
