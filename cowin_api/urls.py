@@ -2,5 +2,5 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('generatetoken/', Generate.as_view(), name="token"),
+    path('getbeneficiary/', GetBeneficiaries.as_view(), name="token"),
 ]
