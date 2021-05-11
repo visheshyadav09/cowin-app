@@ -15,6 +15,10 @@ cowin_app/__pycache__
 cowin_api/__pycache__
 \cowin_api\__pycache__
 
+/cowin/__pycache__
+cowin/__pycache__
+\cowin\__pycache__
+
 /cowin_api/cowin_secret.py
 cowin_api/cowin_secret.py
 \cowin_api\cowin_secret.py
