@@ -70,7 +70,23 @@ class Populate():
 
 
 
-mobile = "9370667988"
-# Populate(mobile=mobile)
-Populate().get_states()
+# mobile = "9370667988"
+# # Populate(mobile=mobile)
+# Populate().get_states()
 
+class Populate_State_District():
+    def save_data(self):
+        with open("data.txt","r+") as f:
+            data = f.read()
+        data = eval(data)
+
+        for id,state in data.items():
+            state_obj = State.objects.create(state_name = state['name'], state_id = id)
+
+            for district in state['districts']:
+                District.objects.create(district_name = district['district_name'], district_id = district['district_id'], state = state_obj)
+
+
+Populate_State_District().save_data()
+        
+    
