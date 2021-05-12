@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import *
 
-handler404 = 'cowin_api.views.handler404'
 
 
 urlpatterns = [
