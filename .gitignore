@@ -1,23 +1,26 @@
 db.sqlite3
-/cowin_app/migrations
-cowin_app/migrations
-\cowin_app\migrations
+/cowin_app/migrations/
+cowin_app/migrations/
+\cowin_app\migrations\
 
-/cowin_api/migrations
-cowin_api/migrations
-\cowin_api\migrations
+/cowin_api/migrations/
+cowin_api/migrations/
+\cowin_api\migrations\
 
-/cowin_app/__pycache__
-cowin_app/__pycache__
-\cowin_app\__pycache__
+*__pycache__/*
+*migrations/*
 
-/cowin_api/__pycache__
-cowin_api/__pycache__
-\cowin_api\__pycache__
+/cowin_app/__pycache__/
+cowin_app/__pycache__/
+\cowin_app\__pycache__\
 
-/cowin/__pycache__
-cowin/__pycache__
-\cowin\__pycache__
+/cowin_api/__pycache__/
+cowin_api/__pycache__/
+\cowin_api\__pycache__\
+
+/cowin/__pycache__/
+cowin/__pycache__/
+\cowin\__pycache__\
 
 /cowin_api/cowin_secret.py
 cowin_api/cowin_secret.py
@@ -26,3 +29,4 @@ cowin_api/cowin_secret.py
 
 
 
+cowin/__pycache__/__init__.cpython-39.pyc
