@@ -8,17 +8,22 @@ import requests
 import json
 import hashlib
 from datetime import datetime, timedelta
+from django.http import HttpResponseNotFound
 from rest_framework.permissions import IsAuthenticated   
 # Create your views here.
 
-OTP_URL             = cowin_secret.OTP_URL
-CONFIRM_OTP         = cowin_secret.CONFIRM_OTP
-GET_STATES          = cowin_secret.GET_STATES
-GET_DISTRICTS       = cowin_secret.GET_DISTRICTS
-GET_BENEFICIARY     = cowin_secret.GET_BENEFICIARY
-SECRET              = cowin_secret.SECRET
-headers             = cowin_secret.headers
+OTP_URL                     = cowin_secret.OTP_URL
+CONFIRM_OTP                 = cowin_secret.CONFIRM_OTP
+GET_STATES                  = cowin_secret.GET_STATES
+GET_DISTRICTS               = cowin_secret.GET_DISTRICTS
+GET_BENEFICIARY             = cowin_secret.GET_BENEFICIARY
+GET_CALENDAR_BY_DISTRICT    = cowin_secret.GET_CALENDAR_BY_DISTRICT
+SECRET                      = cowin_secret.SECRET
+headers                     = cowin_secret.headers
 
+
+def handler404(request,exception):
+    return HttpResponseNotFound("Daa wassa WOOOPSY!")
 
 
 
@@ -102,6 +107,31 @@ class GetBeneficiaries(APIView):
     
         return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}))
 
+
+class GetCalenderbydistrict(APIView):
+
+    def get(self, request, district_id, date ):
+        try:
+            if date != datetime.strptime(date, "%d-%m-%Y").strftime('%d-%m-%Y'):
+                raise ValueError
+            District.objects.get(district_id=district_id)
+        except Exception as e:
+
+            if 'District matching query does not exist.' in e.args:
+                return HttpResponse(json.dumps({'status':'failure','message':'District Id is Incorrect'}))
+            else:
+                return HttpResponse(json.dumps({'status':'failure','message':'Date format is not Correct'}))
+
+        data={'district_id':district_id,'date':date}
+        response = requests.get(GET_CALENDAR_BY_DISTRICT,params=data, headers=headers).content
+
+        if response == b'Unauthenticated access!':
+            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}))
+
+        response = json.loads(response)
+        return HttpResponse(json.dumps({'status' : 'success', 'data' : response}))
+
+        
 
 
                 

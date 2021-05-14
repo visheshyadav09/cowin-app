@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+handler404 = 'cowin_api.views.handler404'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cowin_app.urls')),
