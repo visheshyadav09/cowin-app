@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from cowin_api import serializers
+from cowin_api.serializers import StateSerializers, DistrictSerializers
+from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from .models import *
+from rest_framework.response import Response
 from django.http import HttpResponse
 from django.views import View
 from cowin_api import cowin_secret
@@ -130,6 +133,22 @@ class GetCalenderbydistrict(APIView):
 
         response = json.loads(response)
         return HttpResponse(json.dumps({'status' : 'success', 'data' : response}))
+
+class GetState(APIView):
+    def get(self, request):
+        state = State.objects.all()
+        serializer = StateSerializers(state, many = True)
+        return Response(serializer.data)
+
+
+
+class GetDistrict(APIView):
+    def get(self,request,state_id):
+        state = get_object_or_404(State, state_id = state_id)
+        district = District.objects.filter(state = state)
+        serializer = DistrictSerializers(district, many = True)
+        return Response(serializer.data)
+
 
         
 
