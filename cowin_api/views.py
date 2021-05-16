@@ -85,7 +85,6 @@ class GetBeneficiaries(APIView):
     def post(self, request):
 
         try:
-            received_json_data = json.loads(request.body.decode("utf-8"))
             token = request.session['token']
             headers["Authorization"] = f"Bearer {token}"
         except:
