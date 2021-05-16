@@ -83,7 +83,6 @@ class GetToken(APIView):
 class GetBeneficiaries(APIView):
 
     def post(self, request):
-
         try:
             token = request.session['token']
             headers["Authorization"] = f"Bearer {token}"
@@ -139,12 +138,11 @@ class GetDistrict(APIView):
 
 class ScheduleAppointment(APIView):
     def post(self,request,beneficiary_id):
-        received_json_data = json.loads(request.body.decode("utf-8"))
         try:
+            received_json_data = json.loads(request.body.decode("utf-8"))
             dose = received_json_data['dose']
             session_id = received_json_data['session_id']
             slot = received_json_data['slot']
-            
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Invalid Information Given'}), status = 400)
 
