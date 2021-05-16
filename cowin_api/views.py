@@ -21,6 +21,7 @@ GET_STATES                  = cowin_secret.GET_STATES
 GET_DISTRICTS               = cowin_secret.GET_DISTRICTS
 GET_BENEFICIARY             = cowin_secret.GET_BENEFICIARY
 GET_CALENDAR_BY_DISTRICT    = cowin_secret.GET_CALENDAR_BY_DISTRICT
+SCHEDULE_APPOINTMENT        = cowin_secret.SHCEDULE_APPOINTMENT
 SECRET                      = cowin_secret.SECRET
 headers                     = cowin_secret.headers
 
@@ -149,6 +150,13 @@ class GetDistrict(APIView):
         district = District.objects.filter(state = state)
         serializer = DistrictSerializers(district, many = True)
         return Response(serializer.data)
+
+class ScheduleAppointment(APIView):
+    def post(self,request,beneficiary_id):
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        pass
+
+        
 
 
 
