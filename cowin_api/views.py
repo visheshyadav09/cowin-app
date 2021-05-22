@@ -21,7 +21,8 @@ GET_STATES                  = cowin_secret.GET_STATES
 GET_DISTRICTS               = cowin_secret.GET_DISTRICTS
 GET_BENEFICIARY             = cowin_secret.GET_BENEFICIARY
 GET_CALENDAR_BY_DISTRICT    = cowin_secret.GET_CALENDAR_BY_DISTRICT
-SCHEDULE_APPOINTMENT        = cowin_secret.SCHEDULE_APPOINTMENT
+SCHEDULE_APPOINTMENT        = cowin_secret.SHCEDULE_APPOINTMENT
+CANCEL_APPOINTMENT          =  cowin_secret.CANCEL_APPOINTMENT
 SECRET                      = cowin_secret.SECRET
 headers                     = cowin_secret.headers
 
@@ -159,6 +160,28 @@ class ScheduleAppointment(APIView):
             Subscription.objects.filter(beneficiary_id = beneficiary_id).update(appointment_confirmation_no = response['appointment_confirmation_no'])
 
         
+        return HttpResponse(json.dumps({'status' : 'success', 'data' : response}), status = 200)
+    
+
+
+class CancelAppointment(APIView):
+    def post(self,request,beneficiary_id):
+        try:
+            appointment_id = Subscription.objects.get(beneficiary_id = beneficiary_id).appointment_confirmation_no         
+        except:
+            return HttpResponse(json.dumps({'status':'failure','message':'Beneficiary does not exist'}), status = 400)
+
+        token = request.session['token']
+        headers["Authorization"] = f"Bearer {token}"
+        data = {'appointment_id':appointment_id, 'beneficiaries' : [beneficiary_id]}
+
+        response = requests.post(CANCEL_APPOINTMENT,data = json.dumps(data), headers=headers).content
+        
+        if response == b'Unauthenticated access!':
+            return HttpResponse(json.dumps({'status':'failure','message':'Unauthenticated Access'}), status = 401)
+        
+        response = json.loads(response)
+
         return HttpResponse(json.dumps({'status' : 'success', 'data' : response}), status = 200)
     
 
