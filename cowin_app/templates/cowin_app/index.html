@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
+<div class="mb-3" id="mobile-div">
+  <label for="phone" class="form-label">Mobile Number</label>
+  <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=10 class="form-control" id="phone" placeholder="Please enter your mobile number">
+  <span id="change-number"><a href="#" onClick="window.location.reload(true);">Change number</a></span>
+  <span id="phone-error">Please enter a valid number</span>
+</div>
+<div class="mb-3" id="otp-div">
+  <label for="otp" class="form-label">OTP</label>
+  <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength=6 class="form-control" id="otp" placeholder="Please enter the OTP">
+  <span id="otp-error">Please enter a 6 digit OTP</span>
+</div>
+<button type="button" class="btn btn-primary" id="get-otp">Get OTP</button>
+<button type="button" class="btn btn-primary" id="verify-otp">Verify OTP</button>
 {% endblock %}

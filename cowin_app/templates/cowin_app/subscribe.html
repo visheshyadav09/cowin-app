@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<select class="form-select" id="states-select">
+  <option selected>Select your state</option>
+  {% for state in states %}
+  <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+  {% endfor %}
+</select>
+<select class="form-select" id="district-select">
+  <option selected>Select your district</option>
+</select>
+{% endblock %}

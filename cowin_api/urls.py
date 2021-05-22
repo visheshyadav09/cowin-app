@@ -11,3 +11,7 @@ urlpatterns = [
     path('get-districts/<state_id>/', GetDistrict.as_view(), name="get-districts"),
     path('schedule-appointment/<beneficiary_id>/', ScheduleAppointment.as_view(), name="schedule-appointment"),
 ]
+
+
+
+

@@ -1,4 +1,36 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .navbar-brand{
     margin: auto;
     text-align: center;
+}
+
+#otp-div, #verify-otp, #change-number{
+    display: none;
+}
+
+.form-control:focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}
+
+.warning-red, .warning-red:focus{
+    border-color: #ff0000;
+}
+
+#phone-error, #otp-error{
+    color: #ff0000;
+    font-size: 10px;
+    font-style: italic;
+    display: none;
 }
