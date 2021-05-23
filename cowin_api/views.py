@@ -75,26 +75,25 @@ class GetToken(APIView):
             generate_token = self.generate_token(otp, txnId)
             if not generate_token:
                 return HttpResponse(json.dumps({'status': 'failure', 'message': 'Incorrect OTP'}), status = 422)
-            request.session['token'] = self.token
-            return HttpResponse(json.dumps({'status': 'success', 'message': 'token successfully created'}), status = 200)
+            return HttpResponse(json.dumps({'status': 'success', 'message': 'token successfully created', 'token': self.token}), status = 200)
 
 
 class GetBeneficiaries(APIView):
 
     def post(self, request):
         try:
-            token = request.session['token']
+            token = json.loads(request.body)['token']
             headers["Authorization"] = f"Bearer {token}"
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Token Not Found'}))
         response = requests.get(GET_BENEFICIARY, headers=headers).content
 
         if response == b'Unauthenticated access!':
-            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}))
+            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}), status = 401)
 
-        response = json.loads(response['beneficiaries'])
+        response = json.loads(response)['beneficiaries']
     
-        return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}))
+        return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}), status = 200)
 
 
 class GetCalenderbydistrict(APIView):
@@ -146,7 +145,7 @@ class ScheduleAppointment(APIView):
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Invalid Information Given'}), status = 400)
 
-        token = request.session['token']
+        token = request.POST['token']
         headers["Authorization"] = f"Bearer {token}"
         data = {'dose':dose , 'session_id' : session_id , 'slot' : slot , 'beneficiaries' : [beneficiary_id]}
 
@@ -171,7 +170,7 @@ class CancelAppointment(APIView):
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Beneficiary does not exist'}), status = 400)
 
-        token = request.session['token']
+        token = request.POST['token']
         headers["Authorization"] = f"Bearer {token}"
         data = {'appointment_id':appointment_id, 'beneficiaries' : [beneficiary_id]}
 
