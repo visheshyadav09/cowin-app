@@ -82,18 +82,18 @@ class GetBeneficiaries(APIView):
 
     def post(self, request):
         try:
-            token = request.POST['token']
+            token = json.loads(request.body)['token']
             headers["Authorization"] = f"Bearer {token}"
         except:
             return HttpResponse(json.dumps({'status':'failure','message':'Token Not Found'}))
         response = requests.get(GET_BENEFICIARY, headers=headers).content
 
         if response == b'Unauthenticated access!':
-            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}))
+            return HttpResponse(json.dumps({'status':'failure','message':'Uauthenticated Access'}), status = 401)
 
-        response = json.loads(response['beneficiaries'])
+        response = json.loads(response)['beneficiaries']
     
-        return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}))
+        return HttpResponse(json.dumps({'status' : 'success', 'beneficiary' : response}), status = 200)
 
 
 class GetCalenderbydistrict(APIView):
