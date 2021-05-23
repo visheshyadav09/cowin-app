@@ -1,13 +1,34 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<select class="form-select" id="states-select">
-  <option selected>Select your state</option>
-  {% for state in states %}
-  <option value="{{ state.state_id }}">{{ state.state_name }}</option>
-  {% endfor %}
-</select>
-<select class="form-select" id="district-select">
-  <option selected>Select your district</option>
-</select>
+{% for beneficiary in beneficiaries %}
+<div class="card">
+  <div class="card-header">
+    <p>Name: {{ beneficiary.name }}</p>
+    <p>Id: {{ beneficiary.beneficiary_reference_id }}</p>
+    <p>Status: {{ beneficiary.vaccination_status }}</p>
+    <p>{{ beneficiary.photo_id_type }}: {{ beneficiary.photo_id_number }}</p>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Subscribe</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <div class="row" id="select-div">
+    <div class="col-6">
+    <select class="form-select" id="states-select">
+      <option selected>Select your state</option>
+      {% for state in states %}
+      <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+      {% endfor %}
+    </select>
+    </div>
+    <div class="col-6">
+    <select class="form-select" id="district-select">
+      <option selected>Select your district</option>
+    </select>
+    </div>
+    </div>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+{% endfor %}
 {% endblock %}

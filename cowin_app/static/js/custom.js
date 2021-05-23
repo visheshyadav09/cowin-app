@@ -113,6 +113,7 @@ $(document).ready(function(){
             data: data,
             success: function(result) {
                 data = JSON.parse(result)
+                console.log(result)
                 $('#district-select').empty()
                 $('#district-select').append(`<option value="" selected>Select your district</option>`);
                 for(i=0; i<data.length; i++){
