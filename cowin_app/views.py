@@ -1,8 +1,9 @@
 from django.http import HttpResponse, response
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import requests
 from datetime import date
 import json
+from .utils import *
 # Create your views here.
 
 
@@ -40,29 +41,11 @@ def verify_otp(request):
         'otp': otp,
     }
     response = requests.post(url, data=data)
-    print(response.status_code)
-    return HttpResponse(response.status_code)
-
-def get_beneficiary(request):
-    try:
-        token = request.POST['token']
-    except:
-        return HttpResponse("Please provide token")
-
-    data = {
-        'token': token
-    }
-    url = 'get-beneficiary/'
-    response = requests.post(url, data=json.dumps(data))
-
-def get_states(request):
-    template = 'cowin_app/index.html'
-    url = 'http://127.0.0.1:8001/api/get-states/'
-    response = requests.get(url)
-    context = {
-        "states": json.loads(response.content)
-    }
-    return render(request, template, context)
+    status_code = response.status_code
+    if status_code == 200:
+        data = json.loads(response.content)
+        request.session['token'] = data['token']
+    return HttpResponse(status_code)
 
 def get_districts(request):
     try:
@@ -72,7 +55,8 @@ def get_districts(request):
 
     url = 'http://127.0.0.1:8001/api/get-districts/' + state_id + '/'
     response = requests.get(url)
-    return HttpResponse(status=200)
+    districts = json.loads(response.content)
+    return HttpResponse(json.dumps(districts))
 
 def get_slots(request):
     try:
@@ -80,12 +64,20 @@ def get_slots(request):
     except:
         return HttpResponse("Please select valid district")
 
-    date = date.today().strftime('%d-%m-%Y')
-    url = 'get-slots/' + district_id + '/' + date + '/'
+    appointment_date = date.today().strftime('%d-%m-%Y')
+    url = 'get-slots/' + district_id + '/' + appointment_date + '/'
     response = requests.get(url)
 
 def subscribe(request):
     template = "cowin_app/subscribe.html"
-    return render(request, template)
+    states = get_states()
+    beneficiaries = get_beneficiary(request.session['token'])
+    if not beneficiaries:
+        return redirect(index)
+    context = {
+        'states': states,
+        'beneficiaries': beneficiaries['beneficiary']
+    }
+    return render(request, template, context)
 
 

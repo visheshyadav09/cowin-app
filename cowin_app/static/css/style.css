@@ -34,3 +34,16 @@ input[type=number] {
     font-style: italic;
     display: none;
 }
+
+#select-div{
+  margin-bottom: 20px;
+}
+
+#main-container{
+  margin-top: 20px;
+  width: 50%;
+}
+
+.card-header p{
+  display: inline-block;
+}
