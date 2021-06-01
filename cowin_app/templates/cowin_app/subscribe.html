@@ -13,21 +13,26 @@
     <h5 class="card-title">Subscribe</h5>
     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
     <div class="row" id="select-div">
-    <div class="col-6">
-    <select class="form-select" id="states-select">
-      <option selected>Select your state</option>
-      {% for state in states %}
-      <option value="{{ state.state_id }}">{{ state.state_name }}</option>
-      {% endfor %}
-    </select>
+      <div class="col-6">
+      <select class="form-select" id="states-select">
+        <option selected>Select your state</option>
+        {% for state in states %}
+        <option value="{{ state.state_id }}">{{ state.state_name }}</option>
+        {% endfor %}
+      </select>
+      </div>
+      <div class="col-6">
+      <select class="form-select" id="district-select">
+        <option selected>Select your district</option>
+      </select>
+      </div>
     </div>
-    <div class="col-6">
-    <select class="form-select" id="district-select">
-      <option selected>Select your district</option>
-    </select>
+    <div class="mb-3" id="mobile-div">
+      <label for="phone" class="form-label">Email ID</label>
+      <input type="email" class="form-control" id="phone" placeholder="Please enter your email">
+      <span id="email-error">Please enter a valid email</span>
     </div>
-    </div>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <button type="button" class="btn btn-primary" id="subscribe">Subscribe</button>
   </div>
 </div>
 {% endfor %}

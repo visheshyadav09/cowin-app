@@ -113,7 +113,52 @@ $(document).ready(function(){
             data: data,
             success: function(result) {
                 data = JSON.parse(result)
-                console.log(result)
+                $('#district-select').empty()
+                $('#district-select').append(`<option value="" selected>Select your district</option>`);
+                for(i=0; i<data.length; i++){
+                    $('#district-select').append(`<option value="${data[i]['district_id']}">${data[i]['district_name']}</option>`);
+                }
+            }
+        });
+    });
+
+    $('#subscribe').prop('disabled', true);
+    $('#email').keyup(function(){
+        email = $('#email').val()
+        var pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+        if (!pattern.test(email)){
+            $('#email').addClass('warning-red')
+            $('#email-error').show()
+            $('#subscribe').prop('disabled', true);
+        }
+        // else{
+        //     $('#email').addClass('warning-red')
+        //     $('#email-error').show()
+        //     $('#subscribe').prop('disabled', false);
+        // }​
+        if (!email){
+            $('#email').addClass('warning-red')
+            $('#email-error').show()
+            $('#subscribe').prop('disabled', true);
+        }
+    });
+
+    $('#subscribe').click(function(){
+        district_id = $('#district-select').val()
+        email = $('#email').val()
+        if (!district_id){
+            return
+        }
+        data = {
+            'district_id': district_id
+        }
+        $.ajax({
+            url: "/subscribe/",
+            type: "POST",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: data,
+            success: function(result) {
+                data = JSON.parse(result)
                 $('#district-select').empty()
                 $('#district-select').append(`<option value="" selected>Select your district</option>`);
                 for(i=0; i<data.length; i++){
